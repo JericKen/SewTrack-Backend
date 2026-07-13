@@ -27,12 +27,11 @@ async function main() {
         await prisma.user.create({
 
             data: {
-
                 name: adminName,
                 email: adminEmail,
                 password: hashedPassword,
-                role: "ADMIN"
-
+                role: "ADMIN",
+                isActive: true
             }
 
         });

@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/server.js",
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "seed": "prisma db seed",
+    "migrate": "prisma migrate deploy"
   },
   "keywords": [],
   "author": "",

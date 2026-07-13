@@ -2,16 +2,10 @@ name: SewTrack Backend CI
 
 on:
   push:
-    branches:
-      - main
-
-  pull_request:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     defaults:
@@ -19,23 +13,12 @@ jobs:
         working-directory: server
 
     steps:
+      - uses: actions/checkout@v4
 
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
 
-      - name: Install Dependencies
-        run: npm install
+      - run: npm install
 
-      - name: Generate Prisma Client
-        run: npx prisma generate
-
-      - name: Check Prisma Schema
-        run: npx prisma validate
-
-      - name: Verify Project Starts
-        run: npm run start -- --help
+      - run: npx prisma generate

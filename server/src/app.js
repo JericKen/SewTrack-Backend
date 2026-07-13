@@ -30,7 +30,6 @@ const swaggerSpec = require("./config/swagger");
 
 const app = express();
 
-app.set("trust proxy", 1);
 app.use(helmet());
 app.use(compression());
 app.use(cors());
@@ -60,7 +59,7 @@ app.get("/", (req, res) => {
     }); 
 });
 
-app.get("/health", (req, res) => {
+app.get("/api/health", (req, res) => {
     res.json({
         success: true,
         message: "SewTrack API is running."

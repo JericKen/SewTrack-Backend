@@ -16,19 +16,15 @@ async function login(data) {
 
     });
 
-    if (!user.isActive) {
+    if (!user) {
+        throw new AppError("Invalid email or password.", 401);
+    }
 
+    if (!user.isActive) {
         throw new AppError(
             "Your account has been deactivated.",
             403
         );
-
-    }
-
-    if (!user) {
-
-        throw new AppError("Invalid email or password.", 401);
-
     }
 
     const passwordMatch = await bcrypt.compare(

@@ -1,48 +1,55 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
 
-import Sidebar from "../components/Sidebar";
-import Topbar from "../components/Topbar";
+import { SidebarProvider } from "@/components/ui/sidebar";
+
+import AppSidebar from "../components/layout/AppSidebar";
+
+import AppHeader from "../components/layout/AppHeader";
+
+import { useAuth } from "../context/AuthContext";
 
 export default function ProtectedLayout() {
 
-    const { loading, isAuthenticated } = useAuth();
+    const {
+
+        loading,
+
+        isAuthenticated
+
+    } = useAuth();
 
     if (loading) {
-        return <h2>Loading...</h2>;
+
+        return <div>Loading...</div>;
+
     }
 
     if (!isAuthenticated) {
+
         return <Navigate to="/" replace />;
+
     }
 
     return (
-        <div style={{ display: "flex", minHeight: "100vh" }}>
 
-            <Sidebar />
+        <SidebarProvider>
 
-            <div
-                style={{
-                    flex: 1,
-                    display: "flex",
-                    flexDirection: "column"
-                }}
-            >
+            <AppSidebar />
 
-                <Topbar />
+            <main className="flex-1 flex flex-col">
 
-                <main
-                    style={{
-                        padding: "24px",
-                        background: "#f5f5f5",
-                        flex: 1
-                    }}
-                >
+                <AppHeader />
+
+                <div className="p-6 bg-gray-50 min-h-screen">
+
                     <Outlet />
-                </main>
 
-            </div>
+                </div>
 
-        </div>
+            </main>
+
+        </SidebarProvider>
+
     );
+
 }

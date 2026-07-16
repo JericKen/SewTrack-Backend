@@ -59,9 +59,9 @@ async function createProduct(data) {
             name: data.name,
             description: data.description,
             sku,
-            barcode: data.barcode,
             costPrice: data.costPrice,
             sellingPrice: data.sellingPrice,
+            stockQuantity: data.stockQuantity,
             minimumStock: data.minimumStock,
             unit: data.unit
         },

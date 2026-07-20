@@ -23,22 +23,33 @@ const createProductSchema = z.object({
 
     barcode: z.string().trim().optional(),
 
-    costPrice: z.number().positive(),
+    costPrice: z.coerce.number().positive("Cost price must be greater than 0."),
 
-    sellingPrice: z.number().positive(),
+    sellingPrice: z.coerce.number().positive("Selling price must be greater than 0."),
 
-    minimumStock: z.number().int().min(0),
+    minimumStock: z.coerce.number().int().min(0),
+
+    stockQuantity: z.coerce.number().int().min(0).optional(),
 
     unit: z.enum([
         "PCS",
         "METER",
         "PACK",
         "PAIR",
-        "ROLL"
+        "ROLL",
+        "BUNDLE"
     ])
 
 });
 
+const updateProductSchema = createProductSchema;
+
+const productIdSchema = z.object({
+    id: z.coerce.number().int().positive()
+});
+
 module.exports = {
-    createProductSchema
+    createProductSchema,
+    updateProductSchema,
+    productIdSchema
 };

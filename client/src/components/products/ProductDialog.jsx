@@ -7,7 +7,10 @@ import {
 
 import ProductForm from "./ProductForm";
 
-import { createProduct } from "@/services/productService";
+import {
+    createProduct,
+    updateProduct,
+} from "@/services/productService";
 
 export default function ProductDialog({
 
@@ -51,6 +54,7 @@ export default function ProductDialog({
                 </DialogHeader>
 
                 <ProductForm
+                    product={product}
                     categories={categories}
                     onSubmit={handleSubmit}
                 />

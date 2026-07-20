@@ -8,6 +8,9 @@ async function getProducts() {
         where: {
             isActive: true
         },
+        include: {
+            category: true
+        },
         orderBy: {
             createdAt: "desc"
         }
@@ -72,7 +75,79 @@ async function createProduct(data) {
 
 }
 
+async function updateProduct(id, data) {
+
+    const existingProduct = await prisma.product.findFirst({
+        where: {
+            id: Number(id),
+            isActive: true
+        }
+    });
+
+    if (!existingProduct) {
+        throw new AppError("Product not found.", 404);
+    }
+
+    const category = await prisma.category.findFirst({
+        where: {
+            id: data.categoryId,
+            isActive: true
+        }
+    });
+
+    if (!category) {
+        throw new AppError("Category not found.", 404);
+    }
+
+    return prisma.product.update({
+        where: {
+            id: Number(id)
+        },
+        data: {
+            categoryId: data.categoryId,
+            type: data.type,
+            name: data.name,
+            description: data.description,
+            costPrice: data.costPrice,
+            sellingPrice: data.sellingPrice,
+            stockQuantity: data.stockQuantity,
+            minimumStock: data.minimumStock,
+            unit: data.unit
+        },
+        include: {
+            category: true
+        }
+    });
+
+}
+
+async function deleteProduct(id) {
+
+    const product = await prisma.product.findFirst({
+        where: {
+            id: Number(id),
+            isActive: true
+        }
+    });
+
+    if (!product) {
+        throw new AppError("Product not found.", 404);
+    }
+
+    return prisma.product.update({
+        where: {
+            id: Number(id)
+        },
+        data: {
+            isActive: false
+        }
+    });
+
+}
+
 module.exports = {
     getProducts,
     createProduct,
+    updateProduct,
+    deleteProduct,
 };

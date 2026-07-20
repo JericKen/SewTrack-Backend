@@ -1,51 +1,51 @@
 import { z } from "zod";
 
 export const productSchema = z.object({
-    name: z
-        .string()
-        .trim()
-        .min(1, "Product name is required."),
+  name: z.string().min(1, "Product name is required"),
 
-    categoryId: z
-        .number({
-            required_error: "Category is required.",
-        }),
+  categoryId: z
+    .number({
+      required_error: "Category is required",
+    })
+    .int(),
 
-    type: z.enum([
-        "RESALE",
-        "MANUFACTURED",
-    ]),
+  type: z.enum(["RESALE", "MANUFACTURED"], {
+    required_error: "Product type is required",
+  }),
 
-    unit: z.enum([
-        "PCS",
-        "METER",
-        "PACK",
-        "PAIR",
-        "ROLL",
-        "BUNDLE",
-    ]),
+  unit: z.enum([
+    "PCS",
+    "PAIR",
+    "PACK",
+    "ROLL",
+    "METER",
+  ], {
+    required_error: "Unit is required",
+  }),
 
-    costPrice: z
-        .coerce
-        .number()
-        .min(0, "Cost price cannot be negative."),
+  costPrice: z
+    .number({
+      required_error: "Cost price is required",
+      invalid_type_error: "Cost price is required",
+    })
+    .positive("Cost price must be greater than 0"),
 
-    sellingPrice: z
-        .coerce
-        .number()
-        .min(0, "Selling price cannot be negative."),
+  sellingPrice: z
+    .number({
+      required_error: "Selling price is required",
+      invalid_type_error: "Selling price is required",
+    })
+    .positive("Selling price must be greater than 0"),
 
-    stockQuantity: z
-        .coerce
-        .number()
-        .min(0, "Stock cannot be negative."),
+  stockQuantity: z
+    .number()
+    .int()
+    .min(0),
 
-    minimumStock: z
-        .coerce
-        .number()
-        .min(0, "Minimum stock cannot be negative."),
+  minimumStock: z
+    .number()
+    .int()
+    .min(0),
 
-    description: z
-        .string()
-        .optional(),
+  description: z.string().optional(),
 });

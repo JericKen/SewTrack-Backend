@@ -29,7 +29,6 @@ import {
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
@@ -57,18 +56,20 @@ function StatCard({
         <Card size="sm">
             <CardHeader className="flex flex-row items-start justify-between gap-4 pb-0">
                 <div className="space-y-1">
-                    <CardDescription>{title}</CardDescription>
+                    <CardDescription className="text-foreground/75">
+                        {title}
+                    </CardDescription>
                     <CardTitle className="text-2xl tabular-nums">
                         {value}
                     </CardTitle>
                     {description && (
-                        <p className="text-xs text-muted-foreground">
+                        <p className="text-xs text-foreground/70">
                             {description}
                         </p>
                     )}
                 </div>
 
-                <div className="rounded-lg bg-muted p-2 text-muted-foreground">
+                <div className="rounded-lg bg-muted p-2 text-foreground/70">
                     <Icon className="h-4 w-4" />
                 </div>
             </CardHeader>
@@ -228,7 +229,7 @@ export default function Products() {
         <TooltipProvider>
             <div className="space-y-6">
                 <div>
-                    <p className="mt-1 text-muted-foreground">
+                    <p className="mt-1 text-foreground/75">
                         Manage your catalog, pricing, and stock levels.
                     </p>
                 </div>
@@ -276,7 +277,7 @@ export default function Products() {
                         <h3 className="text-lg font-semibold">
                             No matching products
                         </h3>
-                        <p className="mx-auto mt-2 max-w-sm text-sm text-muted-foreground">
+                        <p className="mx-auto mt-2 max-w-sm text-sm text-foreground/75">
                             No products match &ldquo;{search}&rdquo;. Try a
                             different search term.
                         </p>
@@ -305,19 +306,13 @@ export default function Products() {
                     open={open}
                     onOpenChange={handleDialogChange}
                 >
-                    <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl">
-                        <DialogHeader>
+                    <DialogContent className="gap-3 sm:max-w-2xl">
+                        <DialogHeader className="gap-1">
                             <DialogTitle>
                                 {editingProduct
                                     ? "Edit Product"
                                     : "Add Product"}
                             </DialogTitle>
-
-                            <DialogDescription>
-                                {editingProduct
-                                    ? "Update product details and inventory settings."
-                                    : "Add a new product to your catalog."}
-                            </DialogDescription>
                         </DialogHeader>
 
                         {submitError && (

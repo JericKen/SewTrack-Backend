@@ -102,14 +102,14 @@ export default function ProductTable({
         return (
             <div className="rounded-xl border border-dashed py-16 text-center">
                 <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-muted">
-                    <Package className="h-6 w-6 text-muted-foreground" />
+                    <Package className="h-6 w-6 text-foreground/60" />
                 </div>
 
                 <h3 className="mt-4 text-lg font-semibold">
                     No products found
                 </h3>
 
-                <p className="mx-auto mt-2 max-w-sm text-sm text-muted-foreground">
+                <p className="mx-auto mt-2 max-w-sm text-sm text-foreground/75">
                     {onAdd
                         ? "Get started by adding your first product to track inventory and sales."
                         : "Try adjusting your search to find what you are looking for."}
@@ -163,17 +163,17 @@ export default function ProductTable({
                                 </div>
 
                                 {product.unit && (
-                                    <div className="text-xs text-muted-foreground">
+                                    <div className="text-xs text-foreground/70">
                                         per {product.unit.toLowerCase()}
                                     </div>
                                 )}
                             </TableCell>
 
-                            <TableCell className="font-mono text-xs text-muted-foreground">
+                            <TableCell className="font-mono text-xs text-foreground/75">
                                 {product.sku}
                             </TableCell>
 
-                            <TableCell>
+                            <TableCell className="text-foreground/90">
                                 {product.category?.name ?? "—"}
                             </TableCell>
 

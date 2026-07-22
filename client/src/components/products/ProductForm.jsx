@@ -8,8 +8,6 @@ import { getCategories } from "../../services/categoryService";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
-import { Textarea } from "@/components/ui/textarea";
 import {
     Select,
     SelectContent,
@@ -20,48 +18,20 @@ import {
 
 function FormField({
     label,
-    hint,
     error,
+    className,
     children,
 }) {
     return (
-        <div className="space-y-2">
-            {label && <Label>{label}</Label>}
+        <div className={className ?? "space-y-1"}>
+            {label && <Label className="text-xs">{label}</Label>}
             {children}
-            {hint && !error && (
-                <p className="text-xs text-muted-foreground">
-                    {hint}
-                </p>
-            )}
             {error && (
-                <p className="text-sm text-destructive">
+                <p className="text-xs text-destructive">
                     {error}
                 </p>
             )}
         </div>
-    );
-}
-
-function FormSection({
-    title,
-    description,
-    children,
-}) {
-    return (
-        <section className="space-y-4">
-            <div>
-                <h3 className="text-sm font-medium">
-                    {title}
-                </h3>
-                {description && (
-                    <p className="mt-1 text-xs text-muted-foreground">
-                        {description}
-                    </p>
-                )}
-            </div>
-
-            {children}
-        </section>
     );
 }
 
@@ -125,214 +95,187 @@ export default function ProductForm({
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
-            className="space-y-6"
+            className="space-y-4"
         >
-            <FormSection
-                title="Basic Information"
-                description="Name, category, and product classification."
-            >
-                <div className="grid gap-4 sm:grid-cols-2">
-                    <FormField
-                        label="Product Name"
-                        error={errors.name?.message}
-                    >
+            <div className="grid gap-3 sm:grid-cols-3">
+                <FormField
+                    label="Product Name"
+                    error={errors.name?.message}
+                    className="space-y-1 sm:col-span-2"
+                >
+                    <Input
+                        {...register("name")}
+                        placeholder="e.g. Denim Jacket"
+                    />
+                </FormField>
+
+                {product?.sku && (
+                    <FormField label="SKU">
                         <Input
-                            {...register("name")}
-                            placeholder="e.g. Denim Jacket"
+                            value={product.sku}
+                            disabled
+                            className="font-mono text-foreground/75"
                         />
                     </FormField>
+                )}
 
-                    {product?.sku && (
-                        <FormField label="SKU">
-                            <Input
-                                value={product.sku}
-                                disabled
-                                className="font-mono text-muted-foreground"
-                            />
-                        </FormField>
-                    )}
-
-                    <FormField
-                        label="Category"
-                        error={errors.categoryId?.message}
+                <FormField
+                    label="Category"
+                    error={errors.categoryId?.message}
+                >
+                    <Select
+                        value={categoryId != null ? String(categoryId) : ""}
+                        onValueChange={(value) =>
+                            setValue("categoryId", Number(value), {
+                                shouldValidate: true,
+                            })
+                        }
                     >
-                        <Select
-                            value={categoryId != null ? String(categoryId) : ""}
-                            onValueChange={(value) =>
-                                setValue("categoryId", Number(value), {
-                                    shouldValidate: true,
-                                })
-                            }
-                        >
-                            <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Select category" />
-                            </SelectTrigger>
+                        <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select category" />
+                        </SelectTrigger>
 
-                            <SelectContent>
-                                {categories.map((category) => (
-                                    <SelectItem
-                                        key={category.id}
-                                        value={category.id.toString()}
-                                    >
-                                        {category.name}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </FormField>
-
-                    <FormField
-                        label="Product Type"
-                        error={errors.type?.message}
-                    >
-                        <Select
-                            value={type ?? ""}
-                            onValueChange={(value) =>
-                                setValue("type", value, { shouldValidate: true })
-                            }
-                        >
-                            <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Select type" />
-                            </SelectTrigger>
-
-                            <SelectContent>
-                                <SelectItem value="RESALE">Resale</SelectItem>
-                                <SelectItem value="MANUFACTURED">
-                                    Manufactured
+                        <SelectContent>
+                            {categories.map((category) => (
+                                <SelectItem
+                                    key={category.id}
+                                    value={category.id.toString()}
+                                >
+                                    {category.name}
                                 </SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </FormField>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </FormField>
 
-                    <FormField
-                        label="Unit"
-                        error={errors.unit?.message}
+                <FormField
+                    label="Type"
+                    error={errors.type?.message}
+                >
+                    <Select
+                        value={type ?? ""}
+                        onValueChange={(value) =>
+                            setValue("type", value, { shouldValidate: true })
+                        }
                     >
-                        <Select
-                            value={unit ?? ""}
-                            onValueChange={(value) =>
-                                setValue("unit", value, { shouldValidate: true })
-                            }
-                        >
-                            <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Select unit" />
-                            </SelectTrigger>
+                        <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select type" />
+                        </SelectTrigger>
 
-                            <SelectContent>
-                                <SelectItem value="PCS">Pieces (PCS)</SelectItem>
-                                <SelectItem value="PAIR">Pair</SelectItem>
-                                <SelectItem value="PACK">Pack</SelectItem>
-                                <SelectItem value="ROLL">Roll</SelectItem>
-                                <SelectItem value="METER">Meter</SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </FormField>
-                </div>
-            </FormSection>
+                        <SelectContent>
+                            <SelectItem value="RESALE">Resale</SelectItem>
+                            <SelectItem value="MANUFACTURED">
+                                Manufactured
+                            </SelectItem>
+                        </SelectContent>
+                    </Select>
+                </FormField>
 
-            <Separator />
-
-            <FormSection
-                title="Pricing"
-                description="Set cost and selling prices in PHP."
-            >
-                <div className="grid gap-4 sm:grid-cols-2">
-                    <FormField
-                        label="Cost Price"
-                        error={errors.costPrice?.message}
+                <FormField
+                    label="Unit"
+                    error={errors.unit?.message}
+                >
+                    <Select
+                        value={unit ?? ""}
+                        onValueChange={(value) =>
+                            setValue("unit", value, { shouldValidate: true })
+                        }
                     >
-                        <div className="relative">
-                            <span className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-sm text-muted-foreground">
-                                ₱
-                            </span>
-                            <Input
-                                type="number"
-                                step="0.01"
-                                min="0.01"
-                                placeholder="0.00"
-                                className="pl-8"
-                                {...register("costPrice", {
-                                    valueAsNumber: true,
-                                })}
-                            />
-                        </div>
-                    </FormField>
+                        <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select unit" />
+                        </SelectTrigger>
 
-                    <FormField
-                        label="Selling Price"
-                        error={errors.sellingPrice?.message}
-                    >
-                        <div className="relative">
-                            <span className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-sm text-muted-foreground">
-                                ₱
-                            </span>
-                            <Input
-                                type="number"
-                                step="0.01"
-                                min="0.01"
-                                placeholder="0.00"
-                                className="pl-8"
-                                {...register("sellingPrice", {
-                                    valueAsNumber: true,
-                                })}
-                            />
-                        </div>
-                    </FormField>
-                </div>
-            </FormSection>
+                        <SelectContent>
+                            <SelectItem value="PCS">Pieces (PCS)</SelectItem>
+                            <SelectItem value="PAIR">Pair</SelectItem>
+                            <SelectItem value="PACK">Pack</SelectItem>
+                            <SelectItem value="ROLL">Roll</SelectItem>
+                            <SelectItem value="METER">Meter</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </FormField>
 
-            <Separator />
-
-            <FormSection
-                title="Inventory"
-                description="Track stock levels and low-stock alerts."
-            >
-                <div className="grid gap-4 sm:grid-cols-2">
-                    <FormField
-                        label={product ? "Stock Quantity" : "Initial Stock"}
-                        hint={product
-                            ? "Current on-hand quantity."
-                            : "Starting quantity when the product is created."}
-                        error={errors.stockQuantity?.message}
-                    >
+                <FormField
+                    label="Cost Price"
+                    error={errors.costPrice?.message}
+                >
+                    <div className="relative">
+                        <span className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-sm text-foreground/60">
+                            ₱
+                        </span>
                         <Input
                             type="number"
-                            min="0"
-                            {...register("stockQuantity", {
+                            step="0.01"
+                            min="0.01"
+                            placeholder="0.00"
+                            className="pl-8"
+                            {...register("costPrice", {
                                 valueAsNumber: true,
                             })}
                         />
-                    </FormField>
+                    </div>
+                </FormField>
 
-                    <FormField
-                        label="Minimum Stock"
-                        hint="Alert when stock falls to this level."
-                        error={errors.minimumStock?.message}
-                    >
+                <FormField
+                    label="Selling Price"
+                    error={errors.sellingPrice?.message}
+                >
+                    <div className="relative">
+                        <span className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-sm text-foreground/60">
+                            ₱
+                        </span>
                         <Input
                             type="number"
-                            min="0"
-                            {...register("minimumStock", {
+                            step="0.01"
+                            min="0.01"
+                            placeholder="0.00"
+                            className="pl-8"
+                            {...register("sellingPrice", {
                                 valueAsNumber: true,
                             })}
                         />
-                    </FormField>
-                </div>
-            </FormSection>
+                    </div>
+                </FormField>
 
-            <Separator />
+                <FormField
+                    label={product ? "Stock" : "Initial Stock"}
+                    error={errors.stockQuantity?.message}
+                >
+                    <Input
+                        type="number"
+                        min="0"
+                        {...register("stockQuantity", {
+                            valueAsNumber: true,
+                        })}
+                    />
+                </FormField>
 
-            <FormSection title="Description">
-                <FormField error={errors.description?.message}>
-                    <Textarea
-                        rows={3}
-                        placeholder="Optional notes about this product..."
+                <FormField
+                    label="Min Stock"
+                    error={errors.minimumStock?.message}
+                >
+                    <Input
+                        type="number"
+                        min="0"
+                        {...register("minimumStock", {
+                            valueAsNumber: true,
+                        })}
+                    />
+                </FormField>
+
+                <FormField
+                    label="Description"
+                    error={errors.description?.message}
+                    className="space-y-1 sm:col-span-3"
+                >
+                    <Input
+                        placeholder="Optional notes..."
                         {...register("description")}
                     />
                 </FormField>
-            </FormSection>
+            </div>
 
-            <div className="flex justify-end gap-2 pt-2">
+            <div className="flex justify-end">
                 <Button
                     type="submit"
                     disabled={loading}

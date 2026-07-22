@@ -13,7 +13,7 @@ export default function ProductToolbar({
     return (
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="relative w-full sm:max-w-sm">
-                <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-foreground/50" />
 
                 <Input
                     className="pl-9"
@@ -25,7 +25,7 @@ export default function ProductToolbar({
 
             <div className="flex items-center justify-between gap-4 sm:justify-end">
                 {totalCount != null && (
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-foreground/75">
                         {resultCount === totalCount
                             ? `${totalCount} product${totalCount === 1 ? "" : "s"}`
                             : `${resultCount} of ${totalCount} products`}

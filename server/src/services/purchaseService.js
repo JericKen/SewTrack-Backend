@@ -25,7 +25,12 @@ async function getPurchases(query) {
         },
 
         include: {
-            supplier: true
+            supplier: true,
+            items: {
+                include: {
+                    product: true
+                }
+            }
         }
     });
 

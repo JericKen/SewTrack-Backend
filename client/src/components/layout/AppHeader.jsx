@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ChevronDown, LogOut } from "lucide-react";
 
 import { useAuth } from "../../context/AuthContext";
@@ -14,60 +14,8 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"; 
-import { Separator } from "@/components/ui/separator";
+} from "@/components/ui/dropdown-menu";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-
-const PAGE_META = {
-    "/dashboard": {
-        title: "Dashboard",
-        description: "Overview of your business",
-    },
-    "/products": {
-        title: "Products",
-        description: "Manage your catalog, pricing, and stock",
-    },
-    "/categories": {
-        title: "Categories",
-        description: "Organize products by category",
-    },
-    "/suppliers": {
-        title: "Suppliers",
-        description: "Manage supplier contacts",
-    },
-    "/customers": {
-        title: "Customers",
-        description: "Manage customer records",
-    },
-    "/sales": {
-        title: "Sales",
-        description: "Record sales and track invoices",
-    },
-    "/purchases": {
-        title: "Purchases",
-        description: "Track stock purchases",
-    },
-    "/repairs": {
-        title: "Repairs",
-        description: "Manage repair orders",
-    },
-    "/expenses": {
-        title: "Expenses",
-        description: "Track business expenses",
-    },
-    "/reports": {
-        title: "Reports",
-        description: "View business reports",
-    },
-    "/users": {
-        title: "Users",
-        description: "Manage staff accounts",
-    },
-    "/inventory": {
-        title: "Inventory",
-        description: "Monitor stock movements",
-    },
-};
 
 const ROLE_LABELS = {
     ADMIN: "Admin",
@@ -89,13 +37,7 @@ function getInitials(name) {
 
 export default function AppHeader() {
     const { user, logout } = useAuth();
-    const location = useLocation();
     const navigate = useNavigate();
-
-    const page = PAGE_META[location.pathname] ?? {
-        title: "SewTrack",
-        description: "Business management",
-    };
 
     function handleLogout() {
         logout();
@@ -103,22 +45,8 @@ export default function AppHeader() {
     }
 
     return (
-        <header className="sticky top-0 z-20 flex h-14 shrink-0 items-center gap-3 border-b bg-background/95 px-4 backdrop-blur supports-backdrop-filter:bg-background/80 sm:px-6">
+        <header className="sticky top-0 z-20 flex h-14 shrink-0 items-center justify-between gap-3 border-b bg-background px-4 sm:px-6">
             <SidebarTrigger className="-ml-1" />
-
-            <Separator
-                orientation="vertical"
-                className="hidden h-4 sm:block"
-            />
-
-            <div className="min-w-0 flex-1 text-left">
-                <h1 className="truncate text-sm font-semibold tracking-tight">
-                    {page.title}
-                </h1>
-                <p className="hidden truncate text-xs text-muted-foreground sm:block">
-                    {page.description}
-                </p>
-            </div>
 
             <DropdownMenu>
                 <DropdownMenuTrigger

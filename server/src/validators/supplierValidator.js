@@ -17,6 +17,14 @@ const createSupplierSchema = z.object({
     remarks: z.string().trim().optional(),
 });
 
+const updateSupplierSchema = createSupplierSchema;
+
+const supplierIdSchema = z.object({
+    id: z.coerce.number().int().positive(),
+});
+
 module.exports = {
     createSupplierSchema,
+    updateSupplierSchema,
+    supplierIdSchema,
 };

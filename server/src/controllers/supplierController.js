@@ -14,7 +14,7 @@ const createSupplier = asyncHandler(async (req, res) => {
 });
 
 const getSuppliers = asyncHandler(async (req, res) => {
-    const suppliers = await supplierService.getSuppliers();
+    const suppliers = await supplierService.getSuppliers(req.query.search ?? "");
 
     return apiResponse.success(
         res,
@@ -24,7 +24,34 @@ const getSuppliers = asyncHandler(async (req, res) => {
     );
 });
 
+const updateSupplier = asyncHandler(async (req, res) => {
+    const supplier = await supplierService.updateSupplier(
+        req.params.id,
+        req.body
+    );
+
+    return apiResponse.success(
+        res,
+        200,
+        "Supplier updated successfully.",
+        supplier
+    );
+});
+
+const archiveSupplier = asyncHandler(async (req, res) => {
+    const supplier = await supplierService.archiveSupplier(req.params.id);
+
+    return apiResponse.success(
+        res,
+        200,
+        "Supplier removed successfully.",
+        supplier
+    );
+});
+
 module.exports = {
     createSupplier,
     getSuppliers,
+    updateSupplier,
+    archiveSupplier,
 };

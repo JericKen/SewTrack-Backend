@@ -149,6 +149,12 @@ async function updateUser(currentUserId, targetUserId, data) {
 
     }
 
+    if (currentUserId === targetUserId) {
+
+        delete data.role;
+
+    }
+
     if (data.email) {
 
         const existing = await prisma.user.findFirst({

@@ -65,6 +65,8 @@ const updateUser = asyncHandler(async (req, res) => {
 
     const user = await userService.updateUser(
 
+        req.user.id,
+
         Number(req.params.id),
 
         req.body

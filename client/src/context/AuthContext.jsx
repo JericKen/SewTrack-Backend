@@ -74,6 +74,16 @@ export function AuthProvider({ children }) {
 
     }
 
+    async function refreshUser() {
+
+        const response = await authService.getCurrentUser();
+
+        setUser(response.data);
+
+        return response.data;
+
+    }
+
     return (
 
         <AuthContext.Provider
@@ -82,6 +92,7 @@ export function AuthProvider({ children }) {
                 loading,
                 login,
                 logout,
+                refreshUser,
                 isAuthenticated: !!user
             }}
         >
